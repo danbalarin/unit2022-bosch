@@ -1,12 +1,12 @@
-import React from 'react'
-import type { NextPage } from 'next'
+import React from 'react';
+import type { FC } from 'react';
 
-import { SEO } from '~/components/seo'
-import { Logo } from '~/components/logo'
+import { SEO } from '~/components/seo';
+import { Logo } from '~/components/logo';
 
-import { Page } from './style'
+import { Page } from './style';
 
-export const Home: NextPage = () => {
+export const Home: FC = () => {
   return (
     <Page>
       <SEO
@@ -16,5 +16,5 @@ export const Home: NextPage = () => {
       <Logo />
       <span>Home page</span>
     </Page>
-  )
-}
+  );
+};

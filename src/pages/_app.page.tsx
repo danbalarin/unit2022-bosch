@@ -1,20 +1,13 @@
-import React from 'react'
+import React from 'react';
 import type { AppProps } from 'next/app';
-import NextApp from 'next/app'
-import { createGlobalStyle } from 'styled-components'
-
-const GlobalStyles = createGlobalStyle`
-  body {
-    margin: 0;
-    background: #f5f5f5;
-  }
-`
+import NextApp from 'next/app';
+import { ChakraProvider } from '@chakra-ui/react';
+import '@fontsource/inter/variable.css';
 
 const App: React.FC<AppProps> = (props) => (
-  <>
-    <GlobalStyles />
+  <ChakraProvider>
     <NextApp {...props} />
-  </>
-)
+  </ChakraProvider>
+);
 
-export default App
+export default App;
