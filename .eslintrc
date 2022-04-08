@@ -24,9 +24,15 @@
         ]
       }
     ],
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        "checksVoidReturn": false
+      }
+    ],
 
     // TypeScript
-    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-function-return-type": "off"
   },
 
   "overrides": [

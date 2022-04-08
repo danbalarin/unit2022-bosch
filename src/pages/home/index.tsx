@@ -4,7 +4,7 @@ import type { FC } from 'react';
 import { SEO } from '~/components/Seo';
 import { NavbarLayout } from '~/components/NavbarLayout';
 
-export const Home: FC = () => {
+export const HomePage: FC = () => {
   return (
     <NavbarLayout>
       <SEO

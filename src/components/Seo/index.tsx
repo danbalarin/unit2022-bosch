@@ -1,12 +1,12 @@
 import React from 'react';
 import Head from 'next/head';
 
-interface Props {
+interface SeoProps {
   title: string;
   description: string;
 }
 
-export const SEO = ({ title, description }: Props) => {
+export const SEO = ({ title, description }: SeoProps) => {
   return (
     <Head>
       {/* Primary Meta Tags */}

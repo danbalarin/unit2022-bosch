@@ -1,11 +1,11 @@
-import React from 'react'
-import { render, screen } from '@testing-library/react'
+import React from 'react';
+import { render, screen } from '@testing-library/react';
 
-import { Home } from '.'
+import { HomePage } from '.';
 
 describe('pages/home', () => {
   it('should render home page', () => {
-    render(<Home />)
-    expect(screen.queryByText('Home page')).not.toBeNull()
-  })
-})
+    render(<HomePage />);
+    expect(screen.queryByText('Home page')).not.toBeNull();
+  });
+});
