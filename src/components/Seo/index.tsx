@@ -1,9 +1,9 @@
-import React from 'react'
-import Head from 'next/head'
+import React from 'react';
+import Head from 'next/head';
 
 interface Props {
-  title: string
-  description: string
+  title: string;
+  description: string;
 }
 
 export const SEO = ({ title, description }: Props) => {
@@ -14,5 +14,5 @@ export const SEO = ({ title, description }: Props) => {
       <meta name="title" content={title} />
       <meta name="description" content={description} />
     </Head>
-  )
-}
+  );
+};
