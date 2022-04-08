@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import type { LinkProps } from '@chakra-ui/react';
 import {
   Box,
   Flex,
@@ -19,7 +20,11 @@ import {
   SunIcon,
 } from '@chakra-ui/icons';
 
-const NavLink = ({ children }: { children: ReactNode }) => (
+import { ROUTES } from '~/constants/routes';
+
+type NavLinkProps = LinkProps;
+
+const NavLink = (props: NavLinkProps) => (
   <Link
     px={2}
     py={1}
@@ -28,13 +33,9 @@ const NavLink = ({ children }: { children: ReactNode }) => (
       textDecoration: 'none',
       bg: useColorModeValue('gray.200', 'gray.700'),
     }}
-    href="#"
-  >
-    {children}
-  </Link>
+    {...props}
+  />
 );
-
-const Links = ['Home', 'About', 'Contact'];
 
 export function NavbarLayout({ children }: { children: ReactNode }) {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -53,8 +54,10 @@ export function NavbarLayout({ children }: { children: ReactNode }) {
           <HStack spacing={8} alignItems="center">
             <Box>Unit 2022 - Bosch</Box>
             <HStack as="nav" spacing={4} display={{ base: 'none', md: 'flex' }}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+              {ROUTES.map((route) => (
+                <NavLink key={route.path} href={route.path}>
+                  {route.label}
+                </NavLink>
               ))}
             </HStack>
           </HStack>
@@ -77,8 +80,10 @@ export function NavbarLayout({ children }: { children: ReactNode }) {
         {isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as="nav" spacing={4}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+              {ROUTES.map((route) => (
+                <NavLink key={route.path} href={route.path}>
+                  {route.label}
+                </NavLink>
               ))}
             </Stack>
           </Box>
