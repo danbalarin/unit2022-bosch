@@ -49,6 +49,7 @@ func BuildWebServer() (*webserver.App, error) {
 	iItemsDbSeeder := items.NewDbSeeder(iItemsService)
 	iWarehouseDbSeeder := warehouse.NewDbSeeder(iWarehouseService)
 	migrator := orm.NewMigrator(db, iAuthDbSeeder, iJourneyDbSeeder, iItemsDbSeeder, iWarehouseDbSeeder)
-	app := webserver.NewApp(webConfig, router, migrator)
+	iJourneyWorker := journeys.NewWorker(iJourneyService, iWarehouseService)
+	app := webserver.NewApp(webConfig, router, migrator, iJourneyWorker)
 	return app, nil
 }

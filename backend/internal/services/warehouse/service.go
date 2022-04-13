@@ -13,7 +13,7 @@ type IWarehouseRepository interface {
 	findWarehouses() ([]entity.Warehouse, error)
 
 	insertRoute(route *entity.Route) error
-	findRoutes() ([]entity.Route, error)
+	findRoutes() ([]*entity.Route, error)
 
 	insertWaypoint(waypoint *entity.Waypoint) error
 }
@@ -23,7 +23,7 @@ type IWarehouseService interface {
 	GetWarehouses() ([]entity.Warehouse, error)
 
 	createRoute(route *entity.Route) error
-	GetRoutes() ([]entity.Route, error)
+	GetRoutes() ([]*entity.Route, error)
 
 	createWaypoint(route *entity.Waypoint) error
 }
@@ -50,7 +50,7 @@ func (src *warehouseService) createRoute(route *entity.Route) error {
 	return src.repo.insertRoute(route)
 }
 
-func (src *warehouseService) GetRoutes() ([]entity.Route, error) {
+func (src *warehouseService) GetRoutes() ([]*entity.Route, error) {
 	return src.repo.findRoutes()
 }
 

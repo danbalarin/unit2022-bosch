@@ -11,6 +11,7 @@ type Journey struct {
 	RouteID       uint `gorm:"not null"`
 	DepartureTime time.Time
 	ItemRequests  []*RequestedItems `gorm:"foreignkey:JourneyID"`
+	Place         int               // 0 = at central warehouse, 1 = at first station, 2 = second, ...
 }
 
 type RequestedItems struct {

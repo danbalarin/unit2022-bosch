@@ -53,8 +53,8 @@ func (repo *warehousesRepository) insertRoute(route *entity.Route) error {
 	return nil
 }
 
-func (repo *warehousesRepository) findRoutes() ([]entity.Route, error) {
-	var routes []entity.Route
+func (repo *warehousesRepository) findRoutes() ([]*entity.Route, error) {
+	var routes []*entity.Route
 	if err := repo.db.Preload("Waypoints").Find(&routes).Error; err != nil {
 		return nil, errors.Wrap(err, "failed to find routes")
 	}

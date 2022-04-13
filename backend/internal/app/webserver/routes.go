@@ -43,4 +43,8 @@ func (r Router) Setup(app *fiber.App) {
 	api.Get("/items", r.auth.IsUser, r.items.GetItems)
 	api.Get("/warehouses", r.auth.IsUser, r.warehouses.GetWarehouses)
 	api.Get("/routes", r.auth.IsUser, r.warehouses.GetRoutes)
+	api.Post("/order", r.auth.IsUser, r.journeys.AddItemToCart)
+	api.Get("/journey", r.auth.IsUser, r.journeys.GetTimeOfJourneys)
+
+	api.Get("/journeys", r.auth.IsAdmin, r.journeys.GetAllJourneys)
 }
