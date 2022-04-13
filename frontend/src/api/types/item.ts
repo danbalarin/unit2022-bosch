@@ -5,3 +5,9 @@ export interface IItem {
   DeletedAt?: string | null;
   name: string;
 }
+
+export interface IOrderData {
+  itemId: number;
+  warehouseId: number;
+  count: number;
+}

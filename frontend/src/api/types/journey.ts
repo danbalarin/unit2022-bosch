@@ -1,9 +1,18 @@
 import type { IItem } from './item';
 
-export interface IItemCount {
-  count: number;
-  itemId: IItem['ID'];
-  WarehouseID: IWarehouse['ID'];
+export interface IItemRequest {
+  ID: number;
+  CreatedAt: string;
+  UpdatedAt: string;
+  DeletedAt?: string | null;
+  Journey: null;
+  JourneyID: number;
+  WarehouseID: number;
+  Item: IItem;
+  ItemID: number;
+  counts: number;
+  RequestedBy: null;
+  RequestedByID: number;
 }
 
 export enum JourneyStatus {
@@ -49,6 +58,7 @@ export interface IJourney {
   Route: IRoute;
   RouteID: number;
   DepartureTime: string;
-  ItemRequests: IItemCount[];
+  Departed: boolean;
+  ItemRequests: IItemRequest[];
   Place: number;
 }

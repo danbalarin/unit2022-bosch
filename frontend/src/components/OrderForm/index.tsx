@@ -2,20 +2,27 @@ import React, { useCallback } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Button } from '@chakra-ui/react';
+import { Button, useToast } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 
+import { useOrderMutation } from '../../api/items/postOrder';
 import { useGetItemsQuery } from '../../api/items/getItems';
 import { FormSelect } from '../../components/FormSelect';
 import { FormInput } from '../../components/FormInput';
 
 const validationSchema = z.object({
-  warehouse: z.string().nonempty(),
-  quantity: z
+  warehouseId: z
     .number()
     .or(z.string().regex(/\d+/u).transform(Number))
     .refine((n) => n >= 0),
-  item: z.string().nonempty(),
+  count: z
+    .number()
+    .or(z.string().regex(/\d+/u).transform(Number))
+    .refine((n) => n >= 0),
+  itemId: z
+    .number()
+    .or(z.string().regex(/\d+/u).transform(Number))
+    .refine((n) => n >= 0),
 });
 type FormValues = z.infer<typeof validationSchema>;
 
@@ -29,39 +36,46 @@ export function OrderForm({ enableWarehouseSelection }: IOrderFormProps) {
   const formMethods = useForm<FormValues>({
     resolver: zodResolver(validationSchema),
     defaultValues: {
-      warehouse: '1',
-      item: '1',
-      quantity: 1,
+      warehouseId: 1,
+      itemId: 1,
+      count: 1,
     },
   });
+  const { mutate: order } = useOrderMutation({});
   const { handleSubmit } = formMethods;
   const { data } = useGetItemsQuery({});
+  const toast = useToast();
   const onSubmit = useCallback(
     handleSubmit(async (formData) => {
       try {
-        console.log(formData);
-        // await handleUserSignIn(formData);
-        // setError(false);
+        order(formData);
+        toast({
+          title: 'Pridano do objednavky',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
       } catch (err) {
         // setError(true);
       }
     }),
     [handleSubmit]
   );
+
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={onSubmit}>
         <FormSelect
-          id="warehouse"
-          name="warehouse"
+          id="warehouseId"
+          name="warehouseId"
           label="Mezisklad"
           options={WAREHOUSES.map((val) => ({ value: val, label: val }))}
           mb={4}
           disabled={!enableWarehouseSelection}
         />
         <FormSelect
-          id="item"
-          name="item"
+          id="itemId"
+          name="itemId"
           label="Material"
           options={
             data?.items.map((val) => ({
@@ -72,8 +86,8 @@ export function OrderForm({ enableWarehouseSelection }: IOrderFormProps) {
           mb={4}
         />
         <FormInput
-          id="quantity"
-          name="quantity"
+          id="count"
+          name="count"
           label="Pocet ks"
           inputProps={{ type: 'number' }}
           mb={4}
