@@ -39,7 +39,7 @@ func BuildWebServer() (*webserver.App, error) {
 	itemsRestController := items.NewController(iItemsService)
 	iJourneyRepository := journeys.NewRepository(db)
 	iJourneyService := journeys.NewService(iJourneyRepository)
-	journeysRestController := journeys.NewController(iJourneyService)
+	journeysRestController := journeys.NewController(iJourneyService, authRestController)
 	iWarehouseRepository := warehouse.NewRepository(db)
 	iWarehouseService := warehouse.NewService(iWarehouseRepository)
 	warehouseRestController := warehouse.NewController(iWarehouseService)

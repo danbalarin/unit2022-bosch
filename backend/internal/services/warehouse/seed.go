@@ -42,8 +42,8 @@ func (s *warehouseDbSeeder) Seed() error {
 	log.Println("Seeding routes database")
 
 	routeGolden := &entity.Route{
-		Name:     "Golden route",
-		Interval: 20,
+		Name:     "Zlatá cesta",
+		Interval: 20 * 30,
 	}
 	err := s.svc.createRoute(routeGolden)
 	if err != nil {
@@ -69,7 +69,7 @@ func (s *warehouseDbSeeder) Seed() error {
 	}
 
 	routeSilver := &entity.Route{
-		Name:     "Silver route",
+		Name:     "Sametová cesta",
 		Interval: 30,
 	}
 	err = s.svc.createRoute(routeSilver)
