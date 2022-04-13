@@ -26,4 +26,5 @@ type RequestedItems struct {
 	RequestedByID uint `gorm:"not null"`
 	Warehouse     *Warehouse
 	WarehouseID   uint `gorm:"not null"`
+	Arrived       bool
 }

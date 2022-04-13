@@ -22,6 +22,7 @@ type IJourneyRepository interface {
 	findJourneysByWarehouse(warehouseID uint) ([]*entity.Journey, error)
 	insertItemToJourney(requestedItems *entity.RequestedItems) error
 	updateDepartureJourney(journeyID uint) error
+	setItemsArrived(journeyID uint, warehouseID uint) error
 }
 
 type IJourneyService interface {
@@ -95,6 +96,14 @@ func (j journeyService) updateJourneyPlace(journey *entity.Journey, place int) e
 	if err != nil {
 		return errors.WithStack(err)
 	}
+
+	if place != 0 {
+		err = j.repo.setItemsArrived(journey.ID, journey.Route.Waypoints[place-1].WarehouseID)
+		if err != nil {
+			return errors.WithStack(err)
+		}
+	}
+
 	return nil
 }
 
