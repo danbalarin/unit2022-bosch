@@ -1,5 +1,6 @@
 import { Center, VStack } from '@chakra-ui/react';
 import React from 'react';
+import { useGetJourneysQuery } from 'src/api/items/getJourney';
 
 import { JOURNEY_MOCK } from '../../api/mocks/journey';
 import { Card } from '../../components/Card';
@@ -9,6 +10,7 @@ import { OrderForm } from '../../components/OrderForm';
 import { SEO } from '../../components/Seo';
 
 export function OfficePage() {
+  const { data: journeys } = useGetJourneysQuery({});
   return (
     <NavbarLayout>
       <SEO title="Order" description="creating new orders" />
@@ -18,7 +20,7 @@ export function OfficePage() {
             <OrderForm enableWarehouseSelection />
           </Card>
           <Card>
-            <MaterialTable data={JOURNEY_MOCK} />
+            <MaterialTable data={journeys?.journeys ?? []} />
           </Card>
         </VStack>
       </Center>
