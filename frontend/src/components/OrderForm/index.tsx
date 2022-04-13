@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button, useToast } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
+import { useGetWarehousesQuery } from 'src/api/items/getWarehouse';
 
 import { useGetJourneysQuery } from '../../api/items/getJourney';
 import { useOrderMutation } from '../../api/items/postOrder';
@@ -27,8 +28,6 @@ const validationSchema = z.object({
 });
 type FormValues = z.infer<typeof validationSchema>;
 
-const WAREHOUSES = ['1', '2', '3', '4', '5'];
-
 interface IOrderFormProps {
   enableWarehouseSelection?: boolean;
 }
@@ -45,6 +44,7 @@ export function OrderForm({ enableWarehouseSelection }: IOrderFormProps) {
   const { mutateAsync: order } = useOrderMutation({});
   const { handleSubmit, reset } = formMethods;
   const { data: items } = useGetItemsQuery({});
+  const { data: warehouses } = useGetWarehousesQuery({});
   const toast = useToast();
   const onSubmit = useCallback(
     handleSubmit(async (formData) => {
@@ -71,7 +71,12 @@ export function OrderForm({ enableWarehouseSelection }: IOrderFormProps) {
           id="warehouseId"
           name="warehouseId"
           label="Mezisklad"
-          options={WAREHOUSES.map((val) => ({ value: val, label: val }))}
+          options={
+            warehouses?.warehouses.map((val) => ({
+              value: val.ID,
+              label: val.Name,
+            })) ?? []
+          }
           mb={4}
           disabled={!enableWarehouseSelection}
         />

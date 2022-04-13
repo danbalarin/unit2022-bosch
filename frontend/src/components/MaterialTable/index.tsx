@@ -11,6 +11,7 @@ import {
 import React from 'react';
 import { compareAsc } from 'date-fns';
 
+import { useGetWarehousesQuery } from '../../api/items/getWarehouse';
 import type { IItemRequest, IJourney } from '../../api/types/journey';
 
 interface Props {
@@ -22,6 +23,7 @@ export function MaterialTable({ data, selectedWarehouse }: Props) {
   const sortedData = data.sort((a, b) =>
     compareAsc(new Date(a.DepartureTime), new Date(b.DepartureTime))
   );
+  const { data: warehouses } = useGetWarehousesQuery({});
 
   const finalData = sortedData.reduce<
     Record<number, Array<IItemRequest & { Departed: boolean }>>
@@ -56,7 +58,10 @@ export function MaterialTable({ data, selectedWarehouse }: Props) {
               ({ Item: { name: itemName }, counts, Departed }, index) => (
                 <Tr key={`${warehouse}-${index}`}>
                   {!selectedWarehouse && index === 0 && (
-                    <Td isNumeric>{warehouse}</Td>
+                    <Td isNumeric>
+                      {warehouses?.warehouses.find((w) => w.ID === +warehouse)
+                        ?.Name ?? warehouse}
+                    </Td>
                   )}
                   {!selectedWarehouse && index !== 0 && <Td />}
                   <Td>{itemName}</Td>
