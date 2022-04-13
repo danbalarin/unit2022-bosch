@@ -11,18 +11,25 @@ import { FormInput } from '../../components/FormInput';
 
 const validationSchema = z.object({
   warehouse: z.string().nonempty(),
-  quantity: z.number().positive(),
+  quantity: z
+    .number()
+    .or(z.string().regex(/\d+/u).transform(Number))
+    .refine((n) => n >= 0),
   item: z.string().nonempty(),
 });
 type FormValues = z.infer<typeof validationSchema>;
 
 const WAREHOUSES = ['1', '2', '3', '4', '5'];
 
-export function OrderForm() {
+interface IOrderFormProps {
+  enableWarehouseSelection?: boolean;
+}
+
+export function OrderForm({ enableWarehouseSelection }: IOrderFormProps) {
   const formMethods = useForm<FormValues>({
     resolver: zodResolver(validationSchema),
     defaultValues: {
-      warehouse: '4',
+      warehouse: '1',
       item: '1',
       quantity: 1,
     },
@@ -48,9 +55,9 @@ export function OrderForm() {
           id="warehouse"
           name="warehouse"
           label="Mezisklad"
-          disabled
           options={WAREHOUSES.map((val) => ({ value: val, label: val }))}
           mb={4}
+          disabled={!enableWarehouseSelection}
         />
         <FormSelect
           id="item"

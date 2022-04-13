@@ -17,7 +17,7 @@ export const OrderPage: FC = () => {
   return (
     <NavbarLayout>
       <SEO title="Order" description="creating new orders" />
-      <Center mt={16}>
+      <Center pt={16}>
         <VStack spacing={8}>
           <Heading>
             Nejblizsi prijezd:{' '}
@@ -39,7 +39,7 @@ export const OrderPage: FC = () => {
             <OrderForm />
           </Card>
           <Card>
-            <MaterialTable data={JOURNEY_MOCK} />
+            <MaterialTable data={JOURNEY_MOCK} selectedWarehouse={1} />
           </Card>
         </VStack>
       </Center>
