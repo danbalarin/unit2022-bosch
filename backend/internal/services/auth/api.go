@@ -3,6 +3,7 @@ package auth
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/pkg/errors"
+	"github.com/unit2022-bosch/teapot/backend/internal/entity"
 )
 
 const AuthTokenKey = "Authorization"
@@ -19,7 +20,7 @@ func NewAuthRestController(svc IAuthService) *AuthRestController {
 
 func (ctrl AuthRestController) IsUser(c *fiber.Ctx) error {
 	token := c.Get(AuthTokenKey, "")
-	userRole, err := ctrl.svc.GetUserRoleFromToken(token)
+	user, err := ctrl.svc.GetUserFromToken(token)
 	if err != nil {
 		if errors.Is(err, ErrInvalidToken) {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
@@ -28,7 +29,10 @@ func (ctrl AuthRestController) IsUser(c *fiber.Ctx) error {
 		}
 		return errors.WithStack(err)
 	}
-	if userRole == nil || !userRole.IsUser() {
+	if user == nil {
+		return fiber.ErrUnauthorized
+	}
+	if !user.Role.IsUser() {
 		return fiber.ErrUnauthorized
 	}
 	return c.Next()
@@ -36,7 +40,7 @@ func (ctrl AuthRestController) IsUser(c *fiber.Ctx) error {
 
 func (ctrl AuthRestController) IsAdmin(c *fiber.Ctx) error {
 	token := c.Get(AuthTokenKey, "")
-	userRole, err := ctrl.svc.GetUserRoleFromToken(token)
+	user, err := ctrl.svc.GetUserFromToken(token)
 	if err != nil {
 		if errors.Is(err, ErrInvalidToken) {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
@@ -45,7 +49,10 @@ func (ctrl AuthRestController) IsAdmin(c *fiber.Ctx) error {
 		}
 		return errors.WithStack(err)
 	}
-	if userRole == nil || !userRole.IsAdmin() {
+	if user == nil {
+		return fiber.ErrUnauthorized
+	}
+	if !user.Role.IsAdmin() {
 		return fiber.ErrUnauthorized
 	}
 	return c.Next()
@@ -84,6 +91,15 @@ func (ctrl AuthRestController) Login(c *fiber.Ctx) error {
 	}
 	return c.JSON(fiber.Map{
 		"token": loginRes.Token,
-		"role": loginRes.Role,
+		"role":  loginRes.Role,
 	})
+}
+
+func (ctrl AuthRestController) GetUser(c *fiber.Ctx) (*entity.User, error) {
+	token := c.Get(AuthTokenKey, "")
+	user, err := ctrl.svc.GetUserFromToken(token)
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+	return user, nil
 }

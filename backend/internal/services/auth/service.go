@@ -10,7 +10,7 @@ var ErrInvalidCredentials = errors.New("invalid credentials")
 
 type LoginResponse struct {
 	Token string `json:"token"`
-	Role int `json:"role"`
+	Role  int    `json:"role"`
 }
 
 type IAuthRepository interface {
@@ -21,7 +21,7 @@ type IAuthRepository interface {
 
 type IAuthService interface {
 	Login(email, password string) (*LoginResponse, error)
-	GetUserRoleFromToken(token string) (*entity.UserRole, error)
+	GetUserFromToken(token string) (*entity.User, error)
 	GetUserByID(id uint) (*entity.User, error)
 
 	createUser(user *entity.User) error
@@ -57,7 +57,7 @@ func (s *authService) Login(email, password string) (*LoginResponse, error) {
 
 	res := &LoginResponse{
 		Token: token,
-		Role: int(user.Role),
+		Role:  int(user.Role),
 	}
 
 	return res, nil
@@ -67,7 +67,7 @@ func (s *authService) GetUserByID(id uint) (*entity.User, error) {
 	return s.repo.findUser(id)
 }
 
-func (s *authService) GetUserRoleFromToken(token string) (*entity.UserRole, error) {
+func (s *authService) GetUserFromToken(token string) (*entity.User, error) {
 	userID, err := s.parseJwtToken(token)
 	if err != nil {
 		return nil, errors.WithStack(err)
@@ -84,7 +84,7 @@ func (s *authService) GetUserRoleFromToken(token string) (*entity.UserRole, erro
 	}
 
 	// User exists
-	return &user.Role, nil
+	return user, nil
 }
 
 func (s *authService) createUser(user *entity.User) error {

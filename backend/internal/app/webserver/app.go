@@ -6,6 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/unit2022-bosch/teapot/backend/internal/app/orm"
+	"github.com/unit2022-bosch/teapot/backend/internal/services/journeys"
 	"log"
 	"os"
 	"strconv"
@@ -17,8 +18,15 @@ type App struct {
 	api  *fiber.App
 }
 
-func NewApp(config *webConfig, router *Router, migrator *orm.Migrator) *App {
+func NewApp(config *webConfig, router *Router, migrator *orm.Migrator, worker journeys.IJourneyWorker) *App {
 	err := migrator.Seed()
+	if err != nil {
+		log.Printf("%+v", err)
+		os.Exit(1)
+	}
+
+	log.Println("Start worker")
+	err = worker.Start()
 	if err != nil {
 		log.Printf("%+v", err)
 		os.Exit(1)

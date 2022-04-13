@@ -34,6 +34,7 @@ func BuildWebServer() (*webserver.App, error) {
 		journeys.NewService,
 		journeys.NewRepository,
 		journeys.NewDbSeeder,
+		journeys.NewWorker,
 		warehouse.NewController,
 		warehouse.NewService,
 		warehouse.NewRepository,
