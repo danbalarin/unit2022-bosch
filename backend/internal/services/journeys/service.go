@@ -31,6 +31,7 @@ type IJourneyService interface {
 	updateJourneyPlace(journey *entity.Journey, place int) error
 	AddItemsToJourney(params AddItemsParams) error
 	DepartureJourney(journey *entity.Journey) error
+	//GetTimeOfJourneys(user *entity.User) (*time.Time, *time.Time, error)
 }
 
 type journeyService struct {
@@ -105,7 +106,12 @@ func (svc journeyService) GetJourneyByWarehouse(warehouseID uint) (*entity.Journ
 	if len(journeys) == 0 {
 		return nil, nil
 	}
-	return journeys[0], nil
+	for _, journey := range journeys {
+		if !journey.Departed {
+			return journey, nil
+		}
+	}
+	return nil, nil
 }
 
 func (svc journeyService) AddItemsToJourney(params AddItemsParams) error {
@@ -134,3 +140,36 @@ func (svc journeyService) AddItemsToJourney(params AddItemsParams) error {
 
 	return nil
 }
+
+/*func (j journeyService) GetTimeOfJourneys(user *entity.User) (time.Time, *time.Time, error) {
+	warehouseId := user.WorkspaceID
+	journeys, err := j.repo.findJourneysByWarehouse(warehouseId)
+	if err != nil {
+		return time.Now(), nil, errors.WithStack(err)
+	}
+
+	var journeyWaiting *entity.Journey = nil
+	var journeyDeparted *entity.Journey = nil
+
+	for _, journey := range journeys {
+		if journey.Departed {
+			journeyDeparted = journey
+		} else {
+			journeyWaiting = journey
+		}
+	}
+
+	var awaitingTime *time.Time = nil
+	if journeyDeparted != nil {
+		awaitingTime = &journeyDeparted.DepartureTime
+		for _, waypoint := range journeyDeparted.Route.Waypoints {
+			lastTime := *awaitingTime
+			awaitingTime = lastTime.Add(time.Second * time.Duration(waypoint.Duration))
+			if waypoint.WarehouseID == warehouseId {
+				break
+			}
+		}
+	}
+
+	return journeyWaiting.DepartureTime, awaitingTime, nil
+}*/

@@ -60,6 +60,13 @@ func (ctrl JourneysRestController) AddItemToCart(c *fiber.Ctx) error {
 }
 
 func (ctrl JourneysRestController) GetTimeOfJourneys(c *fiber.Ctx) error {
+	//user, err := ctrl.authCtrl.GetUser(c)
+	//if err != nil {
+	//	return err
+	//}
+
+	//nextCart, cartArrival, err := ctrl.svc.GetTimeOfJourneys(user)
+
 	return c.JSON(fiber.Map{
 		"nextCartDeparture": "2020-01-01T00:00:00Z",
 		"cartArrival":       "2020-01-01T00:00:00Z",
