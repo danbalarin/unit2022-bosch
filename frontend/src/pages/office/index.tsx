@@ -1,8 +1,7 @@
 import { Center, VStack } from '@chakra-ui/react';
 import React from 'react';
-import { useGetJourneysQuery } from 'src/api/items/getJourney';
 
-import { JOURNEY_MOCK } from '../../api/mocks/journey';
+import { useGetJourneysQuery } from '../../api/items/getJourney';
 import { Card } from '../../components/Card';
 import { MaterialTable } from '../../components/MaterialTable';
 import { NavbarLayout } from '../../components/NavbarLayout';

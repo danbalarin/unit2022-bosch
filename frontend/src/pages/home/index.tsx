@@ -1,8 +1,8 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import { SEO } from '~/components/Seo';
-import { NavbarLayout } from '~/components/NavbarLayout';
+import { SEO } from '../../components/Seo';
+import { NavbarLayout } from '../../components/NavbarLayout';
 
 export const HomePage: FC = () => {
   return (

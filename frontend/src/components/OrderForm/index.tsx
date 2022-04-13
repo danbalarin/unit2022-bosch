@@ -4,9 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button, useToast } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import { useGetWarehousesQuery } from 'src/api/items/getWarehouse';
 
-import { useGetJourneysQuery } from '../../api/items/getJourney';
+import { useGetWarehousesQuery } from '../../api/items/getWarehouse';
 import { useOrderMutation } from '../../api/items/postOrder';
 import { useGetItemsQuery } from '../../api/items/getItems';
 import { FormSelect } from '../../components/FormSelect';
