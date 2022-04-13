@@ -40,7 +40,7 @@ func NewApp(config *webConfig, router *Router, migrator *orm.Migrator) *App {
 		TimeFormat: "2006/01/02 15:04:05",
 	}))
 	api.Use(cors.New(cors.Config{
-		AllowOrigins: "*/*",
+		AllowOrigins: "*",
 	}))
 
 	router.Setup(api)
