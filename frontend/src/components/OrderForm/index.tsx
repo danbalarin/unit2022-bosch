@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { Button, useToast } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 
+import { useGetJourneysQuery } from '../../api/items/getJourney';
 import { useOrderMutation } from '../../api/items/postOrder';
 import { useGetItemsQuery } from '../../api/items/getItems';
 import { FormSelect } from '../../components/FormSelect';
@@ -41,20 +42,21 @@ export function OrderForm({ enableWarehouseSelection }: IOrderFormProps) {
       count: 1,
     },
   });
-  const { mutate: order } = useOrderMutation({});
-  const { handleSubmit } = formMethods;
-  const { data } = useGetItemsQuery({});
+  const { mutateAsync: order } = useOrderMutation({});
+  const { handleSubmit, reset } = formMethods;
+  const { data: items } = useGetItemsQuery({});
   const toast = useToast();
   const onSubmit = useCallback(
     handleSubmit(async (formData) => {
       try {
-        order(formData);
+        await order(formData);
         toast({
           title: 'Pridano do objednavky',
           status: 'success',
           duration: 3000,
           isClosable: true,
         });
+        reset();
       } catch (err) {
         // setError(true);
       }
@@ -78,7 +80,7 @@ export function OrderForm({ enableWarehouseSelection }: IOrderFormProps) {
           name="itemId"
           label="Material"
           options={
-            data?.items.map((val) => ({
+            items?.items.map((val) => ({
               label: val.name,
               value: val.ID,
             })) ?? []

@@ -3,8 +3,8 @@ import type { FC } from 'react';
 import { Center, Heading, VStack } from '@chakra-ui/react';
 import { differenceInMinutes, addMinutes } from 'date-fns';
 
+import { useGetJourneysQuery } from '../../api/items/getJourney';
 import { MaterialTable } from '../../components/MaterialTable';
-import { JOURNEY_MOCK } from '../../api/mocks/journey';
 import { Card } from '../../components/Card';
 import { OrderForm } from '../../components/OrderForm';
 import { SEO } from '../../components/Seo';
@@ -13,6 +13,7 @@ import { NavbarLayout } from '../../components/NavbarLayout';
 export const OrderPage: FC = () => {
   const closestArrival = new Date();
   const nextDeparture = addMinutes(closestArrival, 10);
+  const { data: journeys } = useGetJourneysQuery({});
 
   return (
     <NavbarLayout>
@@ -39,7 +40,10 @@ export const OrderPage: FC = () => {
             <OrderForm />
           </Card>
           <Card>
-            <MaterialTable data={JOURNEY_MOCK} selectedWarehouse={1} />
+            <MaterialTable
+              data={journeys?.journeys ?? []}
+              selectedWarehouse={1}
+            />
           </Card>
         </VStack>
       </Center>

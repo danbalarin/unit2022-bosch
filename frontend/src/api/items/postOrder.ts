@@ -1,5 +1,5 @@
 import type { UseMutationOptions } from 'react-query';
-import { useMutation } from 'react-query';
+import { useQueryClient, useMutation } from 'react-query';
 
 import { apiClient } from '../apiClient';
 import type { IOrderData } from '../types/item';
@@ -19,8 +19,12 @@ export const orderItems = async (data: IOrderData) => {
 export const useOrderMutation = (
   options: UseMutationOptions<StatusResponse, IRequestException, IOrderData>
 ) => {
+  const client = useQueryClient();
   return useMutation<StatusResponse, IRequestException, IOrderData>(
     async (data) => await orderItems(data),
-    options
+    {
+      onSuccess: async () => await client.invalidateQueries('journeys'),
+      ...options,
+    }
   );
 };
