@@ -33,6 +33,7 @@ export function FormSelect({
     field,
     fieldState: { error },
   } = useController({ name });
+
   return (
     <FormControl {...props} isInvalid={!!error?.message}>
       <FormLabel htmlFor={name}>{label}</FormLabel>
