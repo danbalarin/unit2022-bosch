@@ -11,7 +11,7 @@ type User struct {
 	Password          string // here is stored real password (in hash)
 	Role              UserRole
 
-	Workspace   *Storage
+	Workspace   *Warehouse
 	WorkspaceID uint
 }
 

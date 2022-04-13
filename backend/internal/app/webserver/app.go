@@ -20,7 +20,8 @@ type App struct {
 func NewApp(config *webConfig, router *Router, migrator *orm.Migrator) *App {
 	err := migrator.Seed()
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("%+v", err)
+		os.Exit(1)
 	}
 
 	log.Println("Starting webserver...")

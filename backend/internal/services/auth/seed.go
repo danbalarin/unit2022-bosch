@@ -22,9 +22,10 @@ func NewAuthDbSeeder(svc IAuthService) IAuthDbSeeder {
 func (s *authDbSeeder) Seed() error {
 	log.Println("Seeding auth database")
 	err := s.svc.createUser(&entity.User{
-		Email:    "admin@unit.cz",
-		Password: s.svc.hashPassword("admin"),
-		Role:     entity.Role_Admin,
+		Email:       "admin@unit.cz",
+		Password:    s.svc.hashPassword("admin"),
+		Role:        entity.Role_Admin,
+		WorkspaceID: 1,
 	})
 	if err != nil {
 		if err != ErrUserAlreadyExists {
@@ -34,9 +35,10 @@ func (s *authDbSeeder) Seed() error {
 		}
 	}
 	err = s.svc.createUser(&entity.User{
-		Email:    "user@unit.cz",
-		Password: s.svc.hashPassword("user"),
-		Role:     entity.Role_User,
+		Email:       "user@unit.cz",
+		Password:    s.svc.hashPassword("user"),
+		Role:        entity.Role_User,
+		WorkspaceID: 2,
 	})
 	if err != nil {
 		if err != ErrUserAlreadyExists {

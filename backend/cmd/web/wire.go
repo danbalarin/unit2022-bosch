@@ -10,6 +10,7 @@ import (
 	"github.com/unit2022-bosch/teapot/backend/internal/services/auth"
 	"github.com/unit2022-bosch/teapot/backend/internal/services/items"
 	"github.com/unit2022-bosch/teapot/backend/internal/services/journeys"
+	"github.com/unit2022-bosch/teapot/backend/internal/services/warehouse"
 )
 
 func BuildWebServer() (*webserver.App, error) {
@@ -33,6 +34,10 @@ func BuildWebServer() (*webserver.App, error) {
 		journeys.NewService,
 		journeys.NewRepository,
 		journeys.NewDbSeeder,
+		warehouse.NewController,
+		warehouse.NewService,
+		warehouse.NewRepository,
+		warehouse.NewDbSeeder,
 	)
 	return &webserver.App{}, nil
 }
