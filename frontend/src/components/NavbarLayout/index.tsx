@@ -21,6 +21,7 @@ import {
 } from '@chakra-ui/icons';
 
 import { ROUTES } from '~/constants/routes';
+import Logo from '../Logo';
 
 type NavLinkProps = LinkProps;
 
@@ -51,8 +52,8 @@ export function NavbarLayout({ children }: { children: ReactNode }) {
             display={{ md: 'none' }}
             onClick={isOpen ? onClose : onOpen}
           />
-          <HStack spacing={8} alignItems="center">
-            <Box>Unit 2022 - Bosch</Box>
+          <HStack maxH={'100%'} spacing={8} alignItems="center">
+            <Logo style={{ maxHeight: '100%', width: '100px' }} />
             <HStack as="nav" spacing={4} display={{ base: 'none', md: 'flex' }}>
               {ROUTES.map((route) => (
                 <NavLink key={route.path} href={route.path}>
@@ -62,7 +63,7 @@ export function NavbarLayout({ children }: { children: ReactNode }) {
             </HStack>
           </HStack>
           <Flex alignItems="center">
-            <Button
+            {/* <Button
               variant="solid"
               colorScheme="teal"
               size="sm"
@@ -70,7 +71,7 @@ export function NavbarLayout({ children }: { children: ReactNode }) {
               leftIcon={<AddIcon />}
             >
               Action
-            </Button>
+            </Button> */}
             <Button size="sm" onClick={toggleColorMode}>
               {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
             </Button>
