@@ -3,6 +3,8 @@ import type { FC } from 'react';
 import { Center, Heading, VStack } from '@chakra-ui/react';
 import { differenceInMinutes, addMinutes } from 'date-fns';
 
+import { MaterialTable } from '../../components/MaterialTable';
+import { JOURNEY_MOCK } from '../../api/mocks/journey';
 import { Card } from '../../components/Card';
 import { OrderForm } from '../../components/OrderForm';
 import { SEO } from '../../components/Seo';
@@ -15,7 +17,7 @@ export const OrderPage: FC = () => {
   return (
     <NavbarLayout>
       <SEO title="Order" description="creating new orders" />
-      <Center mt={16}>
+      <Center pt={16}>
         <VStack spacing={8}>
           <Heading>
             Nejblizsi prijezd:{' '}
@@ -36,7 +38,9 @@ export const OrderPage: FC = () => {
           <Card>
             <OrderForm />
           </Card>
-          <Card>asd</Card>
+          <Card>
+            <MaterialTable data={JOURNEY_MOCK} selectedWarehouse={1} />
+          </Card>
         </VStack>
       </Center>
     </NavbarLayout>
