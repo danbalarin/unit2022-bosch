@@ -1,4 +1,4 @@
-import type { FormControlProps } from '@chakra-ui/react';
+import type { FormControlProps, InputProps } from '@chakra-ui/react';
 import {
   FormControl,
   FormErrorMessage,
@@ -11,12 +11,14 @@ import { useController } from 'react-hook-form';
 interface FormInputProps extends FormControlProps {
   name: string;
   label: string;
-  inputProps?: React.HTMLAttributes<HTMLInputElement>;
+  disabled?: boolean;
+  inputProps?: InputProps;
 }
 
 export function FormInput({
   name,
   label,
+  disabled,
   inputProps,
   ...props
 }: FormInputProps) {
@@ -27,7 +29,7 @@ export function FormInput({
   return (
     <FormControl {...props} isInvalid={!!error?.message}>
       <FormLabel htmlFor={name}>{label}</FormLabel>
-      <Input id={name} {...inputProps} {...field} />
+      <Input disabled={disabled} id={name} {...inputProps} {...field} />
       <FormErrorMessage>
         &nbsp;{error?.message && error.message}
       </FormErrorMessage>
@@ -37,4 +39,5 @@ export function FormInput({
 
 FormInput.defaultProps = {
   inputProps: {},
+  disabled: false,
 };

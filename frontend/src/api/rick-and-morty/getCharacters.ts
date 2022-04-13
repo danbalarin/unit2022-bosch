@@ -1,7 +1,7 @@
 import type { UseQueryOptions, QueryClient } from 'react-query';
 import { useQuery } from 'react-query';
 
-import { apiClient } from '../apiClient';
+import { apiClientRickAndMorty } from '../apiClient';
 
 import type { Character } from './character';
 import type { RickAndMortyResponse } from './response';
@@ -13,7 +13,7 @@ interface IClientProps {
 }
 
 const fetchCharacters = async () => {
-  const response = await apiClient.get('character', {});
+  const response = await apiClientRickAndMorty.get('character', {});
   return (await response.json()) as RickAndMortyResponse<Character[]>;
 };
 
