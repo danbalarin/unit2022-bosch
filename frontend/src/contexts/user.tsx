@@ -19,8 +19,6 @@ interface IAuthContext {
 }
 
 interface IStoreSignedUserProps {
-  accessToken: string;
-  refreshToken: string;
   user: IUser;
 }
 
@@ -51,7 +49,7 @@ function AuthContextProvider({ children }: IAuthContextProviderProps) {
     async (formData: IUserLoginData) => {
       const response = await loginUser(formData);
       setAccessToken(response.token);
-      // setRefreshToken(response.refreshToken);
+      localStorage.setItem('token', response.token);
       setUser(response);
     },
     [setAccessToken]
@@ -61,12 +59,14 @@ function AuthContextProvider({ children }: IAuthContextProviderProps) {
   const handleUserSignOff = useCallback(() => {
     setAccessToken(null);
     setUser(null);
+    localStorage.removeItem('token');
   }, [setAccessToken]);
 
   /* Store data about signed user */
   const storeSignedUser = useCallback(
     (data: IStoreSignedUserProps) => {
-      setAccessToken(data.accessToken);
+      setAccessToken(data.user.token);
+      localStorage.setItem('token', data.user.token);
       setUser(data.user);
     },
     [setAccessToken, setUser]
