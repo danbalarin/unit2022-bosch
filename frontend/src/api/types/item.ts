@@ -1,7 +1,7 @@
 export interface IItem {
-  ID: string;
+  ID: number;
   CreatedAt: string;
   UpdatedAt: string;
-  DeletedAt: string;
+  DeletedAt?: string | null;
   name: string;
 }

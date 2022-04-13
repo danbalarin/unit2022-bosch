@@ -9,7 +9,7 @@ import React from 'react';
 import { useController } from 'react-hook-form';
 
 interface IOption {
-  value: string;
+  value: string | number;
   label: string;
 }
 
