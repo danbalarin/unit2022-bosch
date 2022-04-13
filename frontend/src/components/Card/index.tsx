@@ -11,6 +11,7 @@ export function Card(props: BoxProps) {
       boxShadow="2xl"
       rounded="md"
       overflow="hidden"
+      minW="320px"
       {...props}
     />
   );
