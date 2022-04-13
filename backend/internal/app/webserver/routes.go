@@ -26,5 +26,6 @@ func (r Router) Setup(app *fiber.App) {
 		return c.Send([]byte("Hello, World!"))
 	})
 
-	api.Get("/login", r.auth.Login)
+	api.Post("/login", r.auth.Login)
+	api.Get("/profile", r.auth.IsUser, r.auth.GetUserProfile)
 }
