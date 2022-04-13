@@ -25,7 +25,7 @@ func (s *authService) parseJwtToken(token string) (uint, error) {
 		return 0, ErrInvalidToken
 	}
 	if claims, ok := parsedToken.Claims.(jwt.MapClaims); ok && parsedToken.Valid {
-		return uint(claims["user_id"].(float64)), nil
+		return uint(claims["userId"].(float64)), nil
 	}
 	return 0, errors.New("invalid jwt token")
 }
