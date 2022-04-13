@@ -12,6 +12,7 @@ import (
 	"github.com/unit2022-bosch/teapot/backend/internal/services/auth"
 	"github.com/unit2022-bosch/teapot/backend/internal/services/items"
 	"github.com/unit2022-bosch/teapot/backend/internal/services/journeys"
+	"github.com/unit2022-bosch/teapot/backend/internal/services/warehouse"
 )
 
 // Injectors from wire.go:
@@ -39,11 +40,15 @@ func BuildWebServer() (*webserver.App, error) {
 	iJourneyRepository := journeys.NewRepository(db)
 	iJourneyService := journeys.NewService(iJourneyRepository)
 	journeysRestController := journeys.NewController(iJourneyService)
-	router := webserver.NewRouter(authRestController, itemsRestController, journeysRestController)
+	iWarehouseRepository := warehouse.NewRepository(db)
+	iWarehouseService := warehouse.NewService(iWarehouseRepository)
+	warehouseRestController := warehouse.NewController(iWarehouseService)
+	router := webserver.NewRouter(authRestController, itemsRestController, journeysRestController, warehouseRestController)
 	iAuthDbSeeder := auth.NewAuthDbSeeder(iAuthService)
 	iJourneyDbSeeder := journeys.NewDbSeeder(iJourneyService)
 	iItemsDbSeeder := items.NewDbSeeder(iItemsService)
-	migrator := orm.NewMigrator(db, iAuthDbSeeder, iJourneyDbSeeder, iItemsDbSeeder)
+	iWarehouseDbSeeder := warehouse.NewDbSeeder(iWarehouseService)
+	migrator := orm.NewMigrator(db, iAuthDbSeeder, iJourneyDbSeeder, iItemsDbSeeder, iWarehouseDbSeeder)
 	app := webserver.NewApp(webConfig, router, migrator)
 	return app, nil
 }

@@ -5,24 +5,28 @@ import (
 	"github.com/unit2022-bosch/teapot/backend/internal/services/auth"
 	"github.com/unit2022-bosch/teapot/backend/internal/services/items"
 	"github.com/unit2022-bosch/teapot/backend/internal/services/journeys"
+	"github.com/unit2022-bosch/teapot/backend/internal/services/warehouse"
 	"log"
 )
 
 type Router struct {
-	auth     *auth.AuthRestController
-	items    *items.ItemsRestController
-	journeys *journeys.JourneysRestController
+	auth       *auth.AuthRestController
+	items      *items.ItemsRestController
+	journeys   *journeys.JourneysRestController
+	warehouses *warehouse.WarehouseRestController
 }
 
 func NewRouter(
 	auth *auth.AuthRestController,
 	items *items.ItemsRestController,
 	journeys *journeys.JourneysRestController,
+	warehouses *warehouse.WarehouseRestController,
 ) *Router {
 	return &Router{
 		auth,
 		items,
 		journeys,
+		warehouses,
 	}
 }
 
@@ -37,4 +41,6 @@ func (r Router) Setup(app *fiber.App) {
 	api.Post("/login", r.auth.Login)
 	api.Get("/profile", r.auth.IsUser, r.auth.GetUserProfile)
 	api.Get("/items", r.auth.IsUser, r.items.GetItems)
+	api.Get("/warehouses", r.auth.IsUser, r.warehouses.GetWarehouses)
+	api.Get("/routes", r.auth.IsUser, r.warehouses.GetRoutes)
 }
