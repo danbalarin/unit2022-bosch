@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react';
 import type { LinkProps } from '@chakra-ui/react';
 import {
-  Button,
   Box,
   Flex,
   Link,
@@ -16,7 +15,6 @@ import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { ROUTES } from '../../constants/routes';
 import { Logo } from '../Logo';
 import { LoginModal } from '../LoginModal';
-import { useAuthContext } from '../../contexts/user';
 
 import { Header } from './Header';
 
@@ -37,7 +35,6 @@ const NavLink = (props: NavLinkProps) => (
 
 export function NavbarLayout({ children }: { children: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { user, handleUserSignOff } = useAuthContext();
   return (
     <>
       <Header>
@@ -60,18 +57,7 @@ export function NavbarLayout({ children }: { children: ReactNode }) {
             </HStack>
           </HStack>
           <Flex alignItems="center">
-            {!user?.token ? (
-              <LoginModal />
-            ) : (
-              <Button
-                variant="solid"
-                colorScheme="primary"
-                size="sm"
-                onClick={handleUserSignOff}
-              >
-                Logout
-              </Button>
-            )}
+            <LoginModal />
           </Flex>
         </Flex>
 

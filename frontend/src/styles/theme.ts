@@ -40,6 +40,16 @@ const customTheme: Partial<ChakraTheme> = {
     heading: "'Bosch Sans','Helvetica Neue',Helvetica,Arial,sans-serif",
     body: "'Bosch Sans','Helvetica Neue',Helvetica,Arial,sans-serif",
   },
+  styles: {
+    global: {
+      'html, body, #__next, main': {
+        minHeight: 'calc(100% - 4.5rem)',
+      },
+      'html, body, #__next': {
+        height: '100%',
+      },
+    },
+  },
 };
 
 export const theme = extendTheme(customTheme, chakraTheme);

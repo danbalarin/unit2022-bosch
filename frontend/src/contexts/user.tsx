@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import {
+  useEffect,
   useMemo,
   createContext,
   useContext,
@@ -43,13 +44,20 @@ interface IAuthContextProviderProps {
 function AuthContextProvider({ children }: IAuthContextProviderProps) {
   const [user, setUser] = useState<IUser | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   /* User sign in */
   const handleUserSignIn = useCallback(
     async (formData: IUserLoginData) => {
       const response = await loginUser(formData);
       setAccessToken(response.token);
-      localStorage.setItem('token', response.token);
+      localStorage.setItem('user', JSON.stringify(response));
       setUser(response);
     },
     [setAccessToken]
@@ -59,14 +67,14 @@ function AuthContextProvider({ children }: IAuthContextProviderProps) {
   const handleUserSignOff = useCallback(() => {
     setAccessToken(null);
     setUser(null);
-    localStorage.removeItem('token');
+    localStorage.removeItem('user');
   }, [setAccessToken]);
 
   /* Store data about signed user */
   const storeSignedUser = useCallback(
     (data: IStoreSignedUserProps) => {
       setAccessToken(data.user.token);
-      localStorage.setItem('token', data.user.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
       setUser(data.user);
     },
     [setAccessToken, setUser]

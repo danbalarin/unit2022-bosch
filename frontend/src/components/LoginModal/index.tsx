@@ -35,7 +35,7 @@ export function LoginModal(props: Props) {
   const { handleSubmit } = formMethods;
   const [isError, setError] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { user, handleUserSignIn } = useAuthContext();
+  const { user, handleUserSignIn, handleUserSignOff } = useAuthContext();
 
   const onSubmit = useCallback(
     handleSubmit(async (formData) => {
@@ -57,9 +57,20 @@ export function LoginModal(props: Props) {
 
   return (
     <>
-      <Button variant="solid" colorScheme="primary" size="sm" onClick={onOpen}>
-        Login
-      </Button>
+      {!user?.token ? (
+        <Button variant="solid" colorScheme="brand" size="sm" onClick={onOpen}>
+          Login
+        </Button>
+      ) : (
+        <Button
+          variant="solid"
+          colorScheme="brand"
+          size="sm"
+          onClick={handleUserSignOff}
+        >
+          Logout
+        </Button>
+      )}
       <Modal
         motionPreset="slideInBottom"
         isOpen={isOpen}

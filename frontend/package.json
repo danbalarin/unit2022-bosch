@@ -24,6 +24,7 @@
     "@emotion/styled": "^11",
     "@fontsource/inter": "^4.5.7",
     "@hookform/resolvers": "^2.8.8",
+    "date-fns": "^2.28.0",
     "framer-motion": "^6",
     "jest": "^27.2.4",
     "ky": "^0.30.0",
