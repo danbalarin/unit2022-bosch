@@ -10,6 +10,9 @@ type User struct {
 	PlaintextPassword string `gorm:"-"` // only used to create new user, then newer used
 	Password          string // here is stored real password (in hash)
 	Role              UserRole
+
+	Workspace   *Storage
+	WorkspaceID uint
 }
 
 type UserRole int
