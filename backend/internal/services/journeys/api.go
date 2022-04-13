@@ -3,21 +3,26 @@ package journeys
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/pkg/errors"
+	"github.com/unit2022-bosch/teapot/backend/internal/services/auth"
+	"log"
 )
 
 type JourneysRestController struct {
-	svc IJourneyService
+	svc      IJourneyService
+	authCtrl *auth.AuthRestController
 }
 
-func NewController(svc IJourneyService) *JourneysRestController {
+func NewController(svc IJourneyService, authCtrl *auth.AuthRestController) *JourneysRestController {
 	return &JourneysRestController{
-		svc: svc,
+		svc:      svc,
+		authCtrl: authCtrl,
 	}
 }
 
 type AddItemReq struct {
-	ItemID int `json:"item_id"`
-	Count  int `json:"count"`
+	ItemID      int `json:"itemId"`
+	Count       int `json:"count"`
+	WarehouseID int `json:"warehouseId"`
 }
 
 func (ctrl JourneysRestController) AddItemToCart(c *fiber.Ctx) error {
@@ -29,8 +34,24 @@ func (ctrl JourneysRestController) AddItemToCart(c *fiber.Ctx) error {
 		}
 		return errors.WithStack(err)
 	}
-	if req.ItemID > 0 || req.Count > 0 {
+	log.Println("REQ:", req)
+	if req.ItemID <= 0 || req.Count <= 0 {
 		return fiber.ErrBadRequest
+	}
+
+	user, err := ctrl.authCtrl.GetUser(c)
+	if err != nil {
+		return err
+	}
+
+	err = ctrl.svc.AddItemsToJourney(AddItemsParams{
+		ItemID:      uint(req.ItemID),
+		Count:       uint(req.Count),
+		User:        user,
+		WarehouseID: uint(req.WarehouseID),
+	})
+	if err != nil {
+		return errors.WithStack(err)
 	}
 
 	return c.JSON(fiber.Map{

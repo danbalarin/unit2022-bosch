@@ -8,6 +8,10 @@ import (
 
 const AuthTokenKey = "Authorization"
 
+type IAuthController interface {
+	GetUser(c *fiber.Ctx) (*entity.User, error)
+}
+
 type AuthRestController struct {
 	svc IAuthService
 }

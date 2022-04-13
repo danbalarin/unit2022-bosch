@@ -33,7 +33,7 @@ func (worker *journeyWorker) Start() error {
 				startTime := time.Now()
 				err := worker.Tick()
 				if err != nil {
-					log.Println(err)
+					log.Println("WORKER ERROR:", err)
 				}
 				endTime := time.Now()
 				log.Printf("Tick took %s", endTime.Sub(startTime))
@@ -54,6 +54,10 @@ func (worker *journeyWorker) Tick() error {
 		return err
 	}
 
+	for _, route := range routes {
+		route.IsSpawned = false
+	}
+
 	for _, journey := range journeys {
 		running, err := worker.processJourney(journey)
 		if err != nil {
@@ -62,7 +66,9 @@ func (worker *journeyWorker) Tick() error {
 
 		if !running {
 			for _, route := range routes {
-				route.IsSpawned = true
+				if route.ID == journey.RouteID {
+					route.IsSpawned = true
+				}
 			}
 		}
 	}
@@ -88,6 +94,8 @@ func (worker *journeyWorker) processJourney(journey *entity.Journey) (running bo
 	shouldRun := journey.DepartureTime.Before(now)
 
 	if shouldRun {
+		worker.svcJourney.DepartureJourney(journey)
+
 		currentWaypoint := 0
 		endTime := journey.DepartureTime
 
