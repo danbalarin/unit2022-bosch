@@ -1,27 +1,24 @@
 import type { ReactNode } from 'react';
 import type { LinkProps } from '@chakra-ui/react';
 import {
+  Button,
   Box,
   Flex,
   Link,
-  Button,
   useColorModeValue,
   Stack,
-  useColorMode,
   useDisclosure,
   IconButton,
   HStack,
 } from '@chakra-ui/react';
-import {
-  AddIcon,
-  CloseIcon,
-  HamburgerIcon,
-  MoonIcon,
-  SunIcon,
-} from '@chakra-ui/icons';
+import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 
-import { ROUTES } from '~/constants/routes';
-import Logo from '../Logo';
+import { ROUTES } from '../../constants/routes';
+import { Logo } from '../Logo';
+import { LoginModal } from '../LoginModal';
+import { useAuthContext } from '../../contexts/user';
+
+import { Header } from './Header';
 
 type NavLinkProps = LinkProps;
 
@@ -39,11 +36,11 @@ const NavLink = (props: NavLinkProps) => (
 );
 
 export function NavbarLayout({ children }: { children: ReactNode }) {
-  const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { user, handleUserSignOff } = useAuthContext();
   return (
     <>
-      <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
+      <Header>
         <Flex h={16} alignItems="center" justifyContent="space-between">
           <IconButton
             size="sm"
@@ -52,7 +49,7 @@ export function NavbarLayout({ children }: { children: ReactNode }) {
             display={{ md: 'none' }}
             onClick={isOpen ? onClose : onOpen}
           />
-          <HStack maxH={'100%'} spacing={8} alignItems="center">
+          <HStack maxH="100%" spacing={8} alignItems="center">
             <Logo style={{ maxHeight: '100%', width: '100px' }} />
             <HStack as="nav" spacing={4} display={{ base: 'none', md: 'flex' }}>
               {ROUTES.map((route) => (
@@ -63,18 +60,18 @@ export function NavbarLayout({ children }: { children: ReactNode }) {
             </HStack>
           </HStack>
           <Flex alignItems="center">
-            {/* <Button
-              variant="solid"
-              colorScheme="teal"
-              size="sm"
-              mr={4}
-              leftIcon={<AddIcon />}
-            >
-              Action
-            </Button> */}
-            <Button size="sm" onClick={toggleColorMode}>
-              {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
-            </Button>
+            {!user?.token ? (
+              <LoginModal />
+            ) : (
+              <Button
+                variant="solid"
+                colorScheme="primary"
+                size="sm"
+                onClick={handleUserSignOff}
+              >
+                Logout
+              </Button>
+            )}
           </Flex>
         </Flex>
 
@@ -89,7 +86,7 @@ export function NavbarLayout({ children }: { children: ReactNode }) {
             </Stack>
           </Box>
         ) : null}
-      </Box>
+      </Header>
       <main>{children}</main>
     </>
   );
