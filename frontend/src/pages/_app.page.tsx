@@ -5,6 +5,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import '@fontsource/inter/variable.css';
+import { theme } from '~/styles/theme';
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   const [queryClient] = React.useState(() => new QueryClient());
@@ -15,7 +16,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <QueryClientProviderWithoutType client={queryClient}>
       <HydrateWithoutType state={pageProps?.dehydratedState}>
-        <ChakraProvider>
+        <ChakraProvider theme={theme}>
           <Component {...pageProps} />
           <ReactQueryDevtools initialIsOpen={false} />
         </ChakraProvider>
