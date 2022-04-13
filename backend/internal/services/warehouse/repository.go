@@ -33,7 +33,7 @@ func (repo *warehousesRepository) insertWarehouse(warehouse *entity.Warehouse) e
 
 func (repo *warehousesRepository) findWarehouses() ([]entity.Warehouse, error) {
 	var warehouses []entity.Warehouse
-	if err := repo.db.Find(&warehouses).Error; err != nil {
+	if err := repo.db.Preload("Items").Find(&warehouses).Error; err != nil {
 		return nil, errors.Wrap(err, "failed to find warehouses")
 	}
 	return warehouses, nil

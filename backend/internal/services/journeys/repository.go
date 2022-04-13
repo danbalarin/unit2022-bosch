@@ -69,3 +69,11 @@ func (repo *journeyRepository) updateDepartureJourney(journeyID uint) error {
 		Update("departed", "true").
 		Error
 }
+
+func (repo *journeyRepository) setItemsArrived(journeyID uint, warehouseID uint) error {
+	return repo.db.Model(&entity.RequestedItems{}).
+		Where("journey_id = ?", journeyID).
+		Where("warehouse_id = ?", warehouseID).
+		Update("arrived", true).
+		Error
+}

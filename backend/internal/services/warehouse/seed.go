@@ -43,7 +43,7 @@ func (s *warehouseDbSeeder) Seed() error {
 
 	routeGolden := &entity.Route{
 		Name:     "Zlatá cesta",
-		Interval: 20 * 30,
+		Interval: 300,
 	}
 	err := s.svc.createRoute(routeGolden)
 	if err != nil {
@@ -54,17 +54,17 @@ func (s *warehouseDbSeeder) Seed() error {
 		s.svc.createWaypoint(&entity.Waypoint{
 			RouteID:     routeGolden.ID,
 			WarehouseID: warehouses[0].ID,
-			Duration:    4,
+			Duration:    40,
 		})
 		s.svc.createWaypoint(&entity.Waypoint{
 			RouteID:     routeGolden.ID,
 			WarehouseID: warehouses[1].ID,
-			Duration:    6,
+			Duration:    60,
 		})
 		s.svc.createWaypoint(&entity.Waypoint{
 			RouteID:     routeGolden.ID,
 			WarehouseID: warehouses[2].ID,
-			Duration:    4,
+			Duration:    40,
 		})
 	}
 
